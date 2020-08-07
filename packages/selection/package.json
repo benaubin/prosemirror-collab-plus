@@ -1,6 +1,6 @@
 {
   "name": "@pmcp/selection",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "A plugin for ProseMirror which enables sending the current selection to a server",
   "author": "Ben Aubin <ben@benaubin.com>",
   "homepage": "https://github.com/benaubin/prosemirror-collab-plus#readme",
