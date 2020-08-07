@@ -90,8 +90,6 @@ class CollabSelectionPlugin<S extends Schema = Schema> extends Plugin<
   }
 }
 
-export default function collabSelection<S extends Schema = Schema>(
-  opts: Options
-) {
+export function collabSelection<S extends Schema = Schema>(opts: Options) {
   return new CollabSelectionPlugin<S>(opts);
 }
