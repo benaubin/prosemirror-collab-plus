@@ -14,7 +14,7 @@ export default [
       {
         dir: "dist",
         format: "es",
-        entryFileNames: "[name].mjs",
+        entryFileNames: "[name].es.js",
       },
     ],
     external,
