@@ -1,3 +1,3 @@
 import { PluginKey } from "prosemirror-state";
-export const pluginKey = new PluginKey("rails-collab");
+export const pluginKey = new PluginKey("collab-plus");
 export default pluginKey;

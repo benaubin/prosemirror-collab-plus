@@ -5,7 +5,14 @@ const external = ["prosemirror-state", "prosemirror-transform"];
 export default [
   {
     input: ["./src/index.ts"],
-    output: [{ dir: "dist", format: "cjs", entryFileNames: "[name].js" }],
+    output: [
+      {
+        dir: "dist",
+        format: "cjs",
+        entryFileNames: "[name].js",
+        exports: "named",
+      },
+    ],
     external,
     plugins: [typescript()],
   },

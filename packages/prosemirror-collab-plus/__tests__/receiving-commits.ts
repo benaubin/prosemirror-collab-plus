@@ -1,7 +1,7 @@
 import { InflightCommit } from "../src/inflight-commit";
 import { EditorState } from "prosemirror-state";
 import { schema, doc, p } from "prosemirror-test-builder";
-import { railsCollab } from "../src";
+import railsCollab from "../src";
 import { CollabNetworkAdapter } from "../src/network";
 import { receiveCommitTransaction } from "../src/receive-commit";
 import { Step } from "prosemirror-transform";

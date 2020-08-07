@@ -7,12 +7,6 @@ export interface CommitData {
   ack?: never;
 }
 
-export interface SelectionData {
-  v: number;
-  head: number;
-  anchor: number;
-}
-
 export interface NetworkCallbacks {
   onDisconnect(unrecoverable: boolean | Error): void;
   /** Call once a commit is received */
@@ -22,14 +16,6 @@ export interface NetworkCallbacks {
 export interface CollabNetworkConnection {
   /** Send a commit to the server */
   commit(data: CommitData): void;
-
-  /**
-   * Send selection data to the server, returns a promise that resolves after ACK.
-   *
-   * May return false if temporarily not allowed and should be retried later.
-   * For example, if the adapter only allows one in-flight select at a time.
-   */
-  sendSelect(data: SelectionData): false | Promise<void>;
 
   /** Disconnect from the server, will call onDisconnect() after disconnect */
   disconnect(): void;
@@ -45,7 +31,6 @@ interface SessionCallbacks {
   onClose(e?: Error): void;
   processCommit(commit: CommitData): void;
   getSendableCommit: () => undefined | CommitData;
-  getSendableSelection: () => undefined | SelectionData;
 }
 
 /**
@@ -71,7 +56,6 @@ export class CollabSession {
     return typeof this.connection !== "undefined";
   }
 
-  selectionThrottleMS: number;
   commitThrottleMs: number;
 
   constructor(
@@ -79,7 +63,6 @@ export class CollabSession {
     startingVersion: number,
     callbacks: SessionCallbacks,
     opts: {
-      selectionThrottleMS: number;
       commitThrottleMs: number;
     }
   ) {
@@ -93,7 +76,6 @@ export class CollabSession {
     this.connectionPromise = this.connect();
 
     this.commitThrottleMs = opts.commitThrottleMs;
-    this.selectionThrottleMS = opts.selectionThrottleMS;
   }
 
   async connect() {
@@ -122,24 +104,6 @@ export class CollabSession {
     } catch (e) {
       this.callbacks.onClose(e);
     }
-  }
-
-  private selectScheduled = false;
-
-  sendSelection(): Promise<void> | undefined {
-    if (this.selectScheduled) return;
-    this.selectScheduled = true;
-
-    return new Promise((res) => {
-      setTimeout(async () => {
-        this.selectScheduled = false;
-
-        const sendableSelect = this.callbacks.getSendableSelection();
-        if (sendableSelect) this.connection?.sendSelect(sendableSelect);
-
-        res();
-      }, this.selectionThrottleMS);
-    });
   }
 
   private commitScheduled = false;

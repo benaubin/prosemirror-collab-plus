@@ -1,0 +1,29 @@
+{
+  "name": "prosemirror-collab-plus",
+  "version": "0.4.0",
+  "description": "A better collaborative editing module for ProseMirror",
+  "main": "dist/index.js",
+  "sideEffects": [],
+  "scripts": {
+    "build": "rm -rf dist && rollup -c",
+    "prepare": "npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benaubin/prosemirror-collab-plus.git"
+  },
+  "author": "Ben Aubin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benaubin/prosemirror-collab-plus/issues"
+  },
+  "homepage": "https://github.com/benaubin/prosemirror-collab-plus#readme",
+  "dependencies": {
+    "prosemirror-test-builder": "^1.0.3"
+  },
+  "peerDependencies": {
+    "prosemirror-state": "^1.2.5",
+    "prosemirror-transform": "^1.1.1"
+  }
+}

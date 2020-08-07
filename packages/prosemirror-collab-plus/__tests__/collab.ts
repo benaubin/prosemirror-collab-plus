@@ -5,7 +5,7 @@
 import { EditorState } from "prosemirror-state";
 import { doc, p } from "prosemirror-test-builder";
 import { EditorView } from "prosemirror-view";
-import { railsCollab } from "../src";
+import railsCollab from "../src";
 import { CollabNetworkAdapter, CommitData } from "../src/network";
 
 jest.useFakeTimers();

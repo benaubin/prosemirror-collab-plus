@@ -3,7 +3,6 @@ import { Plugin } from "prosemirror-state";
 import type { PluginSpec } from "prosemirror-state";
 import { Mapping } from "prosemirror-transform";
 import { InflightCommit } from "./inflight-commit";
-import { mapBackToSyncedVersion } from "./mapping";
 import { CollabSession, CollabNetworkAdapter } from "./network";
 import { pluginKey as key } from "./plugin-key";
 import { Rebaseable, transformToRebaseable } from "./rebaseable";
@@ -35,14 +34,10 @@ export interface PluginState<S extends Schema = Schema> {
   unsyncedMapping: Mapping;
 
   syncedVersion: number;
-  selectionNeedsSending?: boolean;
 }
 
 export interface CollabOptions {
   readonly startingVersion: number;
-
-  /** Whether to send the user's cursor selection to the server. If a number, throttle updates by milliseconds (default: 500ms) */
-  readonly syncSelection?: boolean | number;
 
   /** How many miliseconds to throttle commit sending. (default: 200ms) */
   readonly commitThrottleMs?: number;
@@ -51,7 +46,7 @@ export interface CollabOptions {
   readonly onConnectionClose: (e?: Error) => void;
 }
 
-class RailsCollabPlugin<S extends Schema> extends Plugin<PluginState, S> {
+class CollabPlusPlugin<S extends Schema> extends Plugin<PluginState, S> {
   constructor(network: CollabNetworkAdapter, opts: CollabOptions) {
     super({
       key,
@@ -61,7 +56,6 @@ class RailsCollabPlugin<S extends Schema> extends Plugin<PluginState, S> {
           unsyncedMapping: new Mapping(),
           versionMappings: [],
           syncedVersion: opts.startingVersion,
-          selectionNeedsSending: true,
           lastSyncedDoc: state.doc,
         }),
         apply(tr, oldState) {
@@ -77,9 +71,6 @@ class RailsCollabPlugin<S extends Schema> extends Plugin<PluginState, S> {
               );
             }
           }
-
-          if (opts.syncSelection && tr.selectionSet)
-            state.selectionNeedsSending = true;
 
           return state;
         },
@@ -98,42 +89,15 @@ class RailsCollabPlugin<S extends Schema> extends Plugin<PluginState, S> {
               const inflightCommit = InflightCommit.fromState(view.state);
               if (inflightCommit) return inflightCommit.sendable();
             },
-            getSendableSelection() {
-              const pluginState = key.getState(view.state);
-              const selection = mapBackToSyncedVersion(
-                pluginState,
-                view.state.selection
-              );
-
-              if (selection) {
-                pluginState.selectionNeedsSending = false;
-                return {
-                  v: pluginState.syncedVersion,
-                  head: selection.head,
-                  anchor: selection.anchor,
-                };
-              }
-            },
           },
           {
-            selectionThrottleMS:
-              typeof opts.syncSelection === "number" ? opts.syncSelection : 500,
             commitThrottleMs: opts.commitThrottleMs || 200,
           }
         );
 
-        const syncSelection: () => void = async () => {
-          while (key.getState(view.state).selectionNeedsSending) {
-            const syncPromise = session.sendSelection();
-            if (!syncPromise) return;
-            await syncPromise;
-          }
-        };
-
         return {
           update(_) {
             session.commit();
-            syncSelection();
           },
           async destroy() {
             session.close();
@@ -145,9 +109,9 @@ class RailsCollabPlugin<S extends Schema> extends Plugin<PluginState, S> {
   }
 }
 
-export default function railsCollab<S extends Schema>(
+export default function collabPlus<S extends Schema>(
   network: CollabNetworkAdapter,
   opts: CollabOptions
 ) {
-  return new RailsCollabPlugin<S>(network, opts);
+  return new CollabPlusPlugin<S>(network, opts);
 }
