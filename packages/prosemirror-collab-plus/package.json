@@ -3,6 +3,7 @@
   "version": "0.5.3",
   "description": "A better collaborative editing module for ProseMirror",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "sideEffects": [],
   "scripts": {
     "build": "rm -rf dist && rollup -c",

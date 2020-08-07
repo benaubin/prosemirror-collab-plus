@@ -10,7 +10,11 @@ export default [
         dir: "dist",
         format: "cjs",
         entryFileNames: "[name].js",
-        exports: "named",
+      },
+      {
+        dir: "dist",
+        format: "es",
+        entryFileNames: "[name].mjs",
       },
     ],
     external,
