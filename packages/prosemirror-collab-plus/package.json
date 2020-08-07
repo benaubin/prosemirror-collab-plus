@@ -1,6 +1,6 @@
 {
   "name": "prosemirror-collab-plus",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "A better collaborative editing module for ProseMirror",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
