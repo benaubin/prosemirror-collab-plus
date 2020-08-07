@@ -1,7 +1,7 @@
 {
-  "name": "rails-collab",
-  "version": "0.3.3",
-  "description": "Client for use with the collab gem",
+  "name": "prosemirror-collab-plus",
+  "version": "0.4.0",
+  "description": "A better collaborative editing module for ProseMirror",
   "main": "dist/index.js",
   "sideEffects": [],
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benaubin/rails-collab.git"
+    "url": "git+https://github.com/benaubin/prosemirror-collab-plus.git"
   },
   "author": "Ben Aubin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/benaubin/rails-collab/issues"
+    "url": "https://github.com/benaubin/prosemirror-collab-plus/issues"
   },
-  "homepage": "https://github.com/benaubin/rails-collab#readme",
+  "homepage": "https://github.com/benaubin/prosemirror-collab-plus#readme",
   "devDependencies": {
     "@types/actioncable": "^5.2.3",
     "@types/jest": "^26.0.9",
