@@ -1,6 +1,6 @@
 {
   "name": "@pmcp/authority",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "The core functions for a ProseMirror Collab Plus authority server",
   "author": "Ben Aubin <ben@benaubin.com>",
   "homepage": "https://github.com/benaubin/prosemirror-collab-plus#readme",
