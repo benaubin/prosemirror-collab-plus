@@ -1,4 +1,4 @@
-# prosemirror-collab-plus
+# pmcp: prosemirror-collab-plus
 
 Robust collaborative editing with ProseMirror.
 
